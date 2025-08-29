@@ -7,6 +7,9 @@ declare global {
         ready: () => void;
         expand: () => void;
         close: () => void;
+        isExpanded: boolean;
+        viewportHeight: number;
+        viewportStableHeight: number;
         MainButton: {
           text: string;
           show: () => void;
@@ -28,22 +31,58 @@ declare global {
 
 export default function TelegramInit() {
   useEffect(() => {
-    if (window.Telegram?.WebApp) {
-      const tg = window.Telegram.WebApp;
-      
-      // Инициализация приложения
-      tg.ready();
-      
-      // Включение полноэкранного режима
-      tg.expand();
-      
-      // Настройка основной кнопки (если нужна)
-      // tg.MainButton.text = "Заказать";
-      // tg.MainButton.show();
-      
-      console.log('Telegram Web App initialized');
+    const initTelegram = () => {
+      if (window.Telegram?.WebApp) {
+        const tg = window.Telegram.WebApp;
+        
+        console.log('Telegram Web App found, initializing...');
+        
+        // Инициализация приложения
+        tg.ready();
+        
+        // Проверяем текущее состояние
+        console.log('Current viewport height:', tg.viewportHeight);
+        console.log('Is expanded:', tg.isExpanded);
+        
+        // Пытаемся развернуть с задержкой
+        setTimeout(() => {
+          try {
+            tg.expand();
+            console.log('Expand called');
+            
+            // Проверяем результат
+            setTimeout(() => {
+              console.log('After expand - viewport height:', tg.viewportHeight);
+              console.log('After expand - is expanded:', tg.isExpanded);
+            }, 100);
+          } catch (error) {
+            console.error('Error expanding:', error);
+          }
+        }, 500);
+        
+      } else {
+        console.log('Telegram Web App not found, retrying...');
+        // Повторная попытка через 1 секунду
+        setTimeout(initTelegram, 1000);
+      }
+    };
+
+    // Запускаем инициализацию
+    initTelegram();
+    
+    // Также пробуем через DOMContentLoaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTelegram);
     }
+    
+    // И через window.onload
+    window.addEventListener('load', initTelegram);
+
+    return () => {
+      document.removeEventListener('DOMContentLoaded', initTelegram);
+      window.removeEventListener('load', initTelegram);
+    };
   }, []);
 
-  return null; // Компонент не рендерит ничего
+  return null;
 }
