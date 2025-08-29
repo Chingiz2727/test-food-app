@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { load, save } from "../../storage/storage";
 import type { City } from "../../api/cities";
 import { getCities } from "../../api/cities";
@@ -23,6 +23,10 @@ export default function MainPage({ goTo }: Props) {
       <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-6">
         Food Stadium
       </h1>
+
+      <div className="mb-8 w-full flex justify-center">
+        <CitiesListbox label="Город" cities={cities} value={selectedCity} onChange={setSelectedCity} />
+      </div>
 
       {selectedCity && (
         <div className="mb-8 px-3 py-1 rounded-full bg-white/10 text-white/90 text-sm">

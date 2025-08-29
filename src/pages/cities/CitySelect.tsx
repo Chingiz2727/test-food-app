@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getCities, type City } from "../../api/cities";
 import { save } from "../../storage/storage";
 import CitiesListbox from "../main/CitiesListbox";

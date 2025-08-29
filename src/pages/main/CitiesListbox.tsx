@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 
 export type City = { id: number; name: string };
