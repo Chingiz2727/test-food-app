@@ -26,56 +26,71 @@ declare global {
         };
       };
     };
+    TelegramWebviewProxy?: {
+      postEvent: (eventName: string, data: string) => void;
+    };
   }
 }
 
 export default function TelegramInit() {
   useEffect(() => {
     const initTelegram = () => {
+      console.log('Initializing Telegram Mini App...');
+      
+      // Web version (iframe)
       if (window.Telegram?.WebApp) {
         const tg = window.Telegram.WebApp;
+        console.log('Web version detected');
         
-        console.log('Telegram Web App found, initializing...');
-        
-        // Инициализация приложения
         tg.ready();
         
-        // Проверяем текущее состояние
-        console.log('Current viewport height:', tg.viewportHeight);
-        console.log('Is expanded:', tg.isExpanded);
+        // Use web_app_expand method for web
+        const expandData = JSON.stringify({
+          eventType: 'web_app_expand',
+          eventData: {}
+        });
         
-        // Пытаемся развернуть с задержкой
-        setTimeout(() => {
-          try {
-            tg.expand();
-            console.log('Expand called');
-            
-            // Проверяем результат
-            setTimeout(() => {
-              console.log('After expand - viewport height:', tg.viewportHeight);
-              console.log('After expand - is expanded:', tg.isExpanded);
-            }, 100);
-          } catch (error) {
-            console.error('Error expanding:', error);
-          }
-        }, 500);
+        window.parent.postMessage(expandData, 'https://web.telegram.org');
+        console.log('web_app_expand sent via postMessage');
         
-      } else {
-        console.log('Telegram Web App not found, retrying...');
-        // Повторная попытка через 1 секунду
+      } 
+      // Desktop and Mobile versions
+      else if (window.TelegramWebviewProxy?.postEvent) {
+        console.log('Desktop/Mobile version detected');
+        
+        const expandData = JSON.stringify({});
+        window.TelegramWebviewProxy.postEvent('web_app_expand', expandData);
+        console.log('web_app_expand sent via postEvent');
+        
+      } 
+      // Windows Phone (using type assertion)
+      else if ((window as any).external?.notify) {
+        console.log('Windows Phone version detected');
+        
+        const expandData = JSON.stringify({
+          eventType: 'web_app_expand',
+          eventData: {}
+        });
+        
+        (window as any).external.notify(expandData);
+        console.log('web_app_expand sent via external.notify');
+        
+      } 
+      else {
+        console.log('Telegram environment not detected, retrying...');
         setTimeout(initTelegram, 1000);
       }
     };
 
-    // Запускаем инициализацию
+    // Try to initialize immediately
     initTelegram();
     
-    // Также пробуем через DOMContentLoaded
+    // Also try after DOM is ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initTelegram);
     }
     
-    // И через window.onload
+    // And after window load
     window.addEventListener('load', initTelegram);
 
     return () => {
