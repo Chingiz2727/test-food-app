@@ -35,23 +35,31 @@ declare global {
 export default function TelegramInit() {
   useEffect(() => {
     const initTelegram = () => {
-      console.log('Initializing Telegram Mini App...');
+      console.log('Initializing Telegram Mini App 2.0...');
       
-      // Web version (iframe)
+      // Try the new expand() method first (Mini Apps 2.0)
       if (window.Telegram?.WebApp) {
         const tg = window.Telegram.WebApp;
-        console.log('Web version detected');
+        console.log('Telegram WebApp detected, trying expand() method...');
         
         tg.ready();
         
-        // Use web_app_expand method for web
-        const expandData = JSON.stringify({
-          eventType: 'web_app_expand',
-          eventData: {}
-        });
-        
-        window.parent.postMessage(expandData, 'https://web.telegram.org');
-        console.log('web_app_expand sent via postMessage');
+        // Try the new expand method directly
+        try {
+          tg.expand();
+          console.log('tg.expand() called successfully');
+        } catch (error) {
+          console.log('tg.expand() failed, trying alternative methods...');
+          
+          // Fallback to web_app_expand method
+          const expandData = JSON.stringify({
+            eventType: 'web_app_expand',
+            eventData: {}
+          });
+          
+          window.parent.postMessage(expandData, 'https://web.telegram.org');
+          console.log('web_app_expand sent via postMessage');
+        }
         
       } 
       // Desktop and Mobile versions
