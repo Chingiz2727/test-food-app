@@ -3,11 +3,13 @@ import { load, save } from "../../storage/storage";
 import type { City } from "../../api/cities";
 import { getCities } from "../../api/cities";
 import Stadiums from "../stadiums/Stadiums";
+import Restaurants from "../restaurants/restaurants";
 
 export default function MainPage() {
   const [cities, setCities] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState<City | null>(load<City | null>("city", null));
   const [showCityPicker, setShowCityPicker] = useState(false);
+  const [selectedStadium, setSelectedStadium] = useState<number | null>(null);
 
   // mock user data
   const user = { name: "Гость" };
@@ -23,6 +25,14 @@ export default function MainPage() {
   function chooseCity(city: City) {
     setSelectedCity(city);
     setShowCityPicker(false);
+  }
+
+  function handleStadiumSelect(stadiumId: number) {
+    setSelectedStadium(stadiumId);
+  }
+
+  function handleBackToStadiums() {
+    setSelectedStadium(null);
   }
 
   return (
@@ -70,10 +80,16 @@ export default function MainPage() {
       {/* Title / Brand */}
       <h3 className="text-4xl md:text-5xl font-extrabold text-center mb-6">Food Stadium</h3>
 
-      {/* Основной контент каталога (позже добавим карточки) */}
-      <div className="w-full max-w-3xl text-white/70 text-center">
-        <Stadiums /> 
-      </div>
+      {/* Content based on selection */}
+      {!selectedStadium ? (
+        <div className="w-full max-w-3xl">
+          <Stadiums onStadiumSelect={handleStadiumSelect} />
+        </div>
+      ) : (
+        <div className="w-full">
+          <Restaurants onBack={handleBackToStadiums} />
+        </div>
+      )}
     </div>
   );
 }

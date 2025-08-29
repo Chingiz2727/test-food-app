@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { getStadiums, type Stadium } from "../../api/stadiums";
 
-export default function Stadiums() {
+type Props = {
+    onStadiumSelect: (stadiumId: number) => void;
+};
+
+export default function Stadiums({ onStadiumSelect }: Props) {
     const [stadiums, setStadiums] = useState<Stadium[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -24,12 +28,16 @@ export default function Stadiums() {
     return (
         <div className="w-full space-y-4">
             {stadiums.map(stadium => (  
-                <div key={stadium.id} className="w-full bg-neutral-800 rounded-xl overflow-hidden shadow-lg">
+                <button
+                    key={stadium.id}
+                    onClick={() => onStadiumSelect(stadium.id)}
+                    className="w-full bg-neutral-800 rounded-xl overflow-hidden shadow-lg hover:bg-neutral-700 transition-colors text-left"
+                >
                     <img src={stadium.image} alt={stadium.name} className="w-full h-48 object-cover" />
                     <div className="p-4">
                         <div className="text-lg font-bold text-white mb-2">{stadium.name}</div>
                     </div>
-                </div>
+                </button>
             ))}
         </div>
     );
