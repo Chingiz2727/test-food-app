@@ -21,7 +21,7 @@ export default function CitiesListbox({ label = "City", cities, value, onChange 
             <Listbox value={value ?? undefined} onChange={onChange}>
                 <div className="relative mt-1">
                     <Listbox.Button className="relative w-full cursor-default rounded-xl bg-neutral-800 py-3 pl-4 pr-10 text-left text-white shadow-md ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                        <span className="block truncate">{value?.name ?? "Select a city"}</span>
+                        <span className="block truncate">{value?.name ?? "Выберите из списка"}</span>
                         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">▾</span>
                     </Listbox.Button>
                     <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">

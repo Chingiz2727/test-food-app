@@ -28,18 +28,6 @@ export default function MainPage({ goTo }: Props) {
         <CitiesListbox label="Город" cities={cities} value={selectedCity} onChange={setSelectedCity} />
       </div>
 
-      {selectedCity && (
-        <div className="mb-8 px-3 py-1 rounded-full bg-white/10 text-white/90 text-sm">
-          Текущий город: <span className="font-semibold">{selectedCity.name}</span>
-          <button
-            className="ml-3 text-blue-400 underline"
-            onClick={() => goTo("city")}
-          >
-            Изменить
-          </button>
-        </div>
-      )}
-
       <div className="flex flex-col items-stretch w-full max-w-xs space-y-4">
         <button
           type="button"
