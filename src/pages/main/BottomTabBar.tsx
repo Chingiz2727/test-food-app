@@ -1,3 +1,5 @@
+import React from "react";
+
 type Tab = "catalog" | "orders";
 
 type Props = {
@@ -18,7 +20,10 @@ export default function BottomTabBar({ active, onNavigate }: Props) {
     );
 
     return (
-        <div className="fixed bottom-0 inset-x-0 border-t border-white/10 bg-neutral-900/90 backdrop-blur supports-[backdrop-filter]:bg-neutral-900/60">
+        <div
+            className="fixed inset-x-0 border-t border-white/10 bg-neutral-900/90 backdrop-blur supports-[backdrop-filter]:bg-neutral-900/60"
+            style={{ bottom: 0, paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 8px)" }}
+        >
             <div className="mx-auto max-w-md">
                 <nav className="flex">
                     {item("catalog", "Каталог", "🍔")}

@@ -16,7 +16,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-neutral-900 pb-16">
+    <div className="min-h-screen bg-neutral-900 pb-16" style={{ paddingBottom: "calc(4rem + env(safe-area-inset-bottom, 0px))" }}>
       {page === "city" && <CitySelectPage onSaved={() => setPage("catalog")} />}
       {page === "catalog" && <MainPage />}
       {page === "orders" && <div className="p-6 text-white">🧾 Мои заказы (скоро)</div>}
