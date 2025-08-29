@@ -12,12 +12,12 @@ export default function Restaurants({ onBack }: Props) {
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
     const categories = [
-        { id: "all", name: "Все", count: restaurants.length, image: "🍽️" },
-        { id: "asian", name: "Азиатская", count: 251, image: "🥢" },
-        { id: "american", name: "Американская", count: 161, image: "🍔" },
-        { id: "burger", name: "Бургеры", count: 198, image: "🍟" },
-        { id: "pizza", name: "Пицца", count: 145, image: "🍕" },
-        { id: "sushi", name: "Суши", count: 89, image: "🍣" },
+        { id: "all", name: "Все", count: restaurants.length },
+        { id: "asian", name: "Азиатская", count: 251 },
+        { id: "american", name: "Американская", count: 161 },
+        { id: "burger", name: "Бургеры", count: 198 },
+        { id: "pizza", name: "Пицца", count: 145 },
+        { id: "sushi", name: "Суши", count: 89 },
     ];
 
     useEffect(() => {
@@ -53,24 +53,22 @@ export default function Restaurants({ onBack }: Props) {
 
             {/* Category Filters */}
             <div className="mb-6">
-                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                    {categories.map((category) => (
-                        <button
-                            key={category.id}
-                            onClick={() => setSelectedCategory(category.id)}
-                            className={`flex-shrink-0 flex flex-col items-center gap-2 p-4 rounded-xl min-w-[100px] bg-white/10 text-white/90 ${
-                                selectedCategory === category.id 
-                                    ? 'ring-2 ring-yellow-400' 
-                                    : ''
-                            }`}
-                        >
-                            <span className="text-3xl">{category.image}</span>
-                            <div className="text-center">
-                                <div className="text-sm font-medium">{category.name}</div>
-                                <div className="text-xs opacity-75">{category.count} мест</div>
-                            </div>
-                        </button>
-                    ))}
+                <div className="flex justify-center">
+                    <div className="inline-flex gap-3 overflow-x-auto scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] pb-4 px-1 max-w-full">
+                        {categories.map((category) => (
+                            <button
+                                key={category.id}
+                                onClick={() => setSelectedCategory(category.id)}
+                                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium text-white/90 bg-white/10 hover:bg-white/20 category-btn ${
+                                    selectedCategory === category.id 
+                                        ? "selected" 
+                                        : ""
+                                }`}
+                            >
+                                {category.name} ({category.count})
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -89,9 +87,6 @@ export default function Restaurants({ onBack }: Props) {
                             <div className="absolute top-3 right-3 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
                                 {restaurant.deliveryTime} мин
                             </div>
-                            <button className="absolute top-3 left-3 p-2 rounded-full bg-black/30">
-                                <span className="text-white">❤️</span>
-                            </button>
                         </div>
                         
                         <div className="p-4">
