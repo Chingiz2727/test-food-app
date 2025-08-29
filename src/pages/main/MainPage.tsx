@@ -3,7 +3,7 @@ import { load, save } from "../../storage/storage";
 import type { City } from "../../api/cities";
 import { getCities } from "../../api/cities";
 import Stadiums from "../stadiums/Stadiums";
-import Restaurants from "../restaurants/restaurants";
+import Restaurants from "../restaurants/Restaurants";
 
 export default function MainPage() {
   const [cities, setCities] = useState<City[]>([]);
