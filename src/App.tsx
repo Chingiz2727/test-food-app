@@ -4,6 +4,7 @@ import MainPage from "./pages/main/MainPage";
 import { load } from "./storage/storage";
 import type { City } from "./api/cities";
 import BottomTabBar from "./pages/main/BottomTabBar";
+import TelegramInit from "./components/TelegramInit";
 
 type Page = "city" | "catalog" | "orders";
 
@@ -17,6 +18,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-neutral-900 pb-16" style={{ paddingBottom: "calc(4rem + env(safe-area-inset-bottom, 0px))" }}>
+      <TelegramInit />
+      
       {page === "city" && <CitySelectPage onSaved={() => setPage("catalog")} />}
       {page === "catalog" && <MainPage />}
       {page === "orders" && <div className="p-6 text-white">🧾 Мои заказы (скоро)</div>}
