@@ -4,9 +4,7 @@ import type { City } from "../../api/cities";
 import { getCities } from "../../api/cities";
 import CitiesListbox from "./CitiesListbox";
 
-type Props = { goTo: (page: "catalog" | "orders" | "city") => void };
-
-export default function MainPage({ goTo }: Props) {
+export default function MainPage() {
   const [cities, setCities] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState<City | null>(load<City | null>("city", null));
 
@@ -28,23 +26,7 @@ export default function MainPage({ goTo }: Props) {
         <CitiesListbox label="Город" cities={cities} value={selectedCity} onChange={setSelectedCity} />
       </div>
 
-      <div className="flex flex-col items-stretch w-full max-w-xs space-y-4">
-        <button
-          type="button"
-          className="w-full py-4 rounded-2xl bg-yellow-400 text-white text-lg font-semibold shadow-lg transition-transform hover:scale-105 active:scale-95"
-          onClick={() => goTo("catalog")}
-        >
-          🍔 Сделать заказ
-        </button>
-
-        <button
-          type="button"
-          className="w-full py-4 rounded-2xl bg-green-500 text-white text-lg font-semibold shadow-lg transition-transform hover:scale-105 active:scale-95"
-          onClick={() => goTo("orders")}
-        >
-          🧾 Мои заказы
-        </button>
-      </div>
+      {/* Контент главной страницы без локального нижнего бара */}
     </div>
   );
 }
