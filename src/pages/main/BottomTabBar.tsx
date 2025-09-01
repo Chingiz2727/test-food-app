@@ -9,7 +9,11 @@ export default function BottomTabBar({ active, onNavigate }: Props) {
     const item = (key: Tab, label: string, emoji: string) => (
         <button
             type="button"
-            className={`flex-1 py-3 text-center ${active === key ? "text-yellow-300" : "text-white/90 hover:text-white"}`}
+            className={`flex-1 py-3 text-center transition-colors duration-200 ${
+                active === key 
+                    ? "text-secondary font-semibold" 
+                    : "text-text-secondary hover:text-text-primary"
+            }`}
             onClick={() => onNavigate(key)}
         >
             <span className="mr-1">{emoji}</span>
@@ -19,7 +23,7 @@ export default function BottomTabBar({ active, onNavigate }: Props) {
 
     return (
         <div
-            className="fixed inset-x-0 border-t border-white/10 bg-neutral-900/90 backdrop-blur supports-[backdrop-filter]:bg-neutral-900/60"
+            className="fixed inset-x-0 border-t border-border bg-surface/90 backdrop-blur supports-[backdrop-filter]:bg-surface/60"
             style={{ bottom: 0, paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 8px)" }}
         >
             <div className="mx-auto max-w-md">

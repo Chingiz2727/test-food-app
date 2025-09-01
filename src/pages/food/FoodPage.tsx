@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getFoodItems, type FoodItem } from '../../api/food';
-import { PageHeader } from '../../components';
-import FoodCard from '../../components/FoodCard';
+import { getFoodItems, getFoodCategories, type FoodItem, type FoodCategory } from '../../api/food';
+import { PageHeader, FoodSection } from '../../components';
 import CheckoutButton from '../../components/CheckoutButton';
 import { useCart } from '../../contexts/CartContext';
 
@@ -11,6 +10,7 @@ type Props = {
 
 export default function FoodPage({ onBack }: Props) {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
+  const [categories, setCategories] = useState<FoodCategory[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { getTotalItems } = useCart();
@@ -20,8 +20,16 @@ export default function FoodPage({ onBack }: Props) {
     setLoading(true);
     setError(null);
     
-    getFoodItems()
-      .then(list => { if (!cancelled) setFoodItems(list); })
+    Promise.all([
+      getFoodItems(),
+      getFoodCategories()
+    ])
+      .then(([foods, cats]) => { 
+        if (!cancelled) {
+          setFoodItems(foods);
+          setCategories(cats);
+        }
+      })
       .catch(error => !cancelled && setError(String(error)))
       .finally(() => !cancelled && setLoading(false));
 
@@ -54,13 +62,20 @@ export default function FoodPage({ onBack }: Props) {
     );
   }
 
+  // Group foods by category
+  const foodsByCategory = categories.map(category => ({
+    category,
+    foods: foodItems.filter(food => food.category === category.id)
+  }));
+
   return (
     <div className="w-full pb-40">
       <PageHeader title="Меню" onBack={onBack} />
       
-      <div className="grid grid-cols-2 gap-4">
-        {foodItems.map((food) => (
-          <FoodCard key={food.id} food={food} />
+      {/* Food Sections */}
+      <div className="space-y-8">
+        {foodsByCategory.map(({ category, foods }) => (
+          <FoodSection key={category.id} category={category} foods={foods} />
         ))}
       </div>
       

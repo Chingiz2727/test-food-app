@@ -14,7 +14,7 @@ export default function FoodCard({ food }: FoodCardProps) {
   console.log(`FoodCard ${food.name} - cartItems:`, cartItems);
 
   const handleAddToCart = () => {
-    console.log(`Adding ${food.name} to cart`);
+    console.log(`Adding ${food.name} to cart`); // Debug log
     addToCart({
       id: food.id,
       name: food.name,
@@ -24,13 +24,13 @@ export default function FoodCard({ food }: FoodCardProps) {
   };
 
   const handleRemoveFromCart = () => {
-    console.log(`Removing ${food.name} from cart`);
+    console.log(`Removing ${food.name} from cart`); // Debug log
     removeFromCart(food.id);
   };
 
   return (
-    <div className="bg-neutral-800 rounded-xl overflow-hidden shadow-lg">
-      <div className="relative">
+    <div className="food-card">
+      <div className="food-card-image">
         <img 
           src={food.image} 
           alt={food.name} 
@@ -38,34 +38,34 @@ export default function FoodCard({ food }: FoodCardProps) {
         />
       </div>
       
-      <div className="p-3">
-        <h3 className="text-sm font-semibold text-white mb-1 line-clamp-2">{food.name}</h3>
+      <div className="food-card-content">
+        <h3 className="food-card-title">{food.name}</h3>
         <div className="flex items-center justify-between">
-          <span className="text-yellow-400 font-bold text-sm">
+          <span className="food-card-price">
             {food.price.toLocaleString()} ₸
           </span>
           
           {quantity === 0 ? (
             <button
               onClick={handleAddToCart}
-              className="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-semibold rounded-lg transition-colors"
+              className="food-card-button"
             >
               Добавить
             </button>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="food-card-quantity-controls">
               <button
                 onClick={handleRemoveFromCart}
-                className="w-6 h-6 bg-red-500 hover:bg-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center transition-colors"
+                className="food-card-quantity-btn minus"
               >
                 -
               </button>
-              <span className="text-white text-sm font-semibold min-w-[20px] text-center">
+              <span className="food-card-quantity">
                 {quantity}
               </span>
               <button
                 onClick={handleAddToCart}
-                className="w-6 h-6 bg-green-500 hover:bg-green-600 text-white text-xs font-bold rounded-full flex items-center justify-center transition-colors"
+                className="food-card-quantity-btn plus"
               >
                 +
               </button>
