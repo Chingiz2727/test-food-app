@@ -4,12 +4,14 @@ import type { City } from "../../api/cities";
 import { getCities } from "../../api/cities";
 import Stadiums from "../stadiums/Stadiums";
 import Restaurants from "../restaurants/Restaurants";
+import FoodPage from "../food/FoodPage";
 
 export default function MainPage() {
   const [cities, setCities] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState<City | null>(load<City | null>("city", null));
   const [showCityPicker, setShowCityPicker] = useState(false);
   const [selectedStadium, setSelectedStadium] = useState<number | null>(null);
+  const [selectedRestaurant, setSelectedRestaurant] = useState<number | null>(null);
 
   // mock user data
   const user = { name: "Гость" };
@@ -35,10 +37,18 @@ export default function MainPage() {
     setSelectedStadium(null);
   }
 
+  function handleRestaurantSelect(restaurantId: number) {
+    setSelectedRestaurant(restaurantId);
+  }
+
+  function handleBackToRestaurants() {
+    setSelectedRestaurant(null);
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-neutral-900 text-white page-container">
       {/* Header - only show when selecting stadiums */}
-      {!selectedStadium && (
+      {!selectedStadium && !selectedRestaurant && (
         <header className="w-full max-w-3xl mx-auto flex items-center justify-between gap-4 mb-2">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold">
@@ -80,17 +90,22 @@ export default function MainPage() {
       )}
 
       {/* Title / Brand - only show when selecting stadiums */}
-      {!selectedStadium && (
-        <h2 className="text-lg font-semibold text-center mb-3">Food Stadium</h2>
+      {!selectedStadium && !selectedRestaurant && (
+        <h3 className="text-4xl md:text-5xl font-extrabold text-center mb-6 mx-auto">Food Stadium</h3>
       )}
+
       {/* Content based on selection */}
-      {!selectedStadium ? (
-        <div className="w-full max-w-3xl mx-auto">
+      {!selectedStadium && !selectedRestaurant ? (
+        <div className="w-full max-w-3xl mx-auto pb-20">
           <Stadiums onStadiumSelect={handleStadiumSelect} />
         </div>
+      ) : selectedStadium && !selectedRestaurant ? (
+        <div className="w-full max-w-3xl mx-auto pb-20">
+          <Restaurants onBack={handleBackToStadiums} onRestaurantSelect={handleRestaurantSelect} />
+        </div>
       ) : (
-        <div className="w-full max-w-3xl mx-auto">
-          <Restaurants onBack={handleBackToStadiums} />
+        <div className="w-full max-w-3xl mx-auto pb-20">
+          <FoodPage onBack={handleBackToRestaurants} />
         </div>
       )}
     </div>

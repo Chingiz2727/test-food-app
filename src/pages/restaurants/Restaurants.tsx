@@ -4,9 +4,10 @@ import { ItemsList, PageHeader, CategoryFilters } from "../../components";
 
 type Props = {
     onBack: () => void;
+    onRestaurantSelect: (restaurantId: number) => void;
 };
 
-export default function Restaurants({ onBack }: Props) {
+export default function Restaurants({ onBack, onRestaurantSelect }: Props) {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -51,6 +52,7 @@ export default function Restaurants({ onBack }: Props) {
                     items={restaurants}
                     loading={loading}
                     error={error}
+                    onItemClick={(restaurant) => onRestaurantSelect(restaurant.id)}
                     loadingText="Загрузка ресторанов..."
                     errorText="Ошибка загрузки ресторанов"
                 />
