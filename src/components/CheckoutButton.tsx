@@ -1,4 +1,4 @@
-import { useCart } from '../hooks/useCart';
+import { useCart } from '../contexts/CartContext';
 
 type CheckoutButtonProps = {
   onCheckout: () => void;
@@ -12,7 +12,7 @@ export default function CheckoutButton({ onCheckout }: CheckoutButtonProps) {
   if (totalItems === 0) return null;
 
   return (
-    <div className="fixed bottom-20 left-0 right-0 z-50 px-4 pb-4">
+    <div className="fixed bottom-32 left-0 right-0 z-[9999] px-4 pb-4">
       <div className="max-w-3xl mx-auto">
         <button
           onClick={onCheckout}

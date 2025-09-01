@@ -9,9 +9,12 @@ export function useCart() {
   // Load cart from localStorage on mount
   useEffect(() => {
     const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+    console.log('useCart - loading from localStorage:', savedCart);
     if (savedCart) {
       try {
-        setCartItems(JSON.parse(savedCart));
+        const parsedCart = JSON.parse(savedCart);
+        console.log('useCart - parsed cart from localStorage:', parsedCart);
+        setCartItems(parsedCart);
       } catch (error) {
         console.error('Error loading cart from localStorage:', error);
       }
@@ -20,21 +23,27 @@ export function useCart() {
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
+    console.log('useCart - saving to localStorage:', cartItems);
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
   }, [cartItems]);
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
+    console.log('useCart - addToCart called with:', item);
     setCartItems(prevItems => {
       const existingItem = prevItems.find(cartItem => cartItem.id === item.id);
       
       if (existingItem) {
-        return prevItems.map(cartItem =>
+        const newItems = prevItems.map(cartItem =>
           cartItem.id === item.id
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
+        console.log('useCart - updated existing item, new cart:', newItems);
+        return newItems;
       } else {
-        return [...prevItems, { ...item, quantity: 1 }];
+        const newItems = [...prevItems, { ...item, quantity: 1 }];
+        console.log('useCart - added new item, new cart:', newItems);
+        return newItems;
       }
     });
   };

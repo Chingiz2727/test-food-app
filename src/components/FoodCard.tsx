@@ -1,15 +1,20 @@
 import type { FoodItem } from '../api/food';
-import { useCart } from '../hooks/useCart';
+import { useCart } from '../contexts/CartContext';
 
 type FoodCardProps = {
   food: FoodItem;
 };
 
 export default function FoodCard({ food }: FoodCardProps) {
-  const { addToCart, removeFromCart, getItemQuantity } = useCart();
+  const { addToCart, removeFromCart, getItemQuantity, cartItems } = useCart();
   const quantity = getItemQuantity(food.id);
 
+  // Debug: log cart state for this food item
+  console.log(`FoodCard ${food.name} - quantity:`, quantity);
+  console.log(`FoodCard ${food.name} - cartItems:`, cartItems);
+
   const handleAddToCart = () => {
+    console.log(`Adding ${food.name} to cart`);
     addToCart({
       id: food.id,
       name: food.name,
@@ -19,6 +24,7 @@ export default function FoodCard({ food }: FoodCardProps) {
   };
 
   const handleRemoveFromCart = () => {
+    console.log(`Removing ${food.name} from cart`);
     removeFromCart(food.id);
   };
 
