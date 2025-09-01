@@ -5,3 +5,4 @@ export { default as CategoryFilters } from './CategoryFilters';
 export { default as FoodCard } from './FoodCard';
 export { default as CheckoutButton } from './CheckoutButton';
 export { default as FoodSection } from './FoodSection';
+export { default as CheckoutModal } from './CheckoutModal';

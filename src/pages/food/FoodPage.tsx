@@ -37,8 +37,8 @@ export default function FoodPage({ onBack }: Props) {
   }, []);
 
   const handleCheckout = () => {
-    // TODO: Implement checkout logic
-    alert('Функция оформления заказа будет добавлена позже!');
+    // This will be called after successful order confirmation
+    console.log('Checkout completed - cart cleared');
   };
 
   // Debug: log total items
