@@ -36,10 +36,10 @@ export default function MainPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-6 py-6 bg-neutral-900 text-white">
+    <div className="min-h-screen flex flex-col bg-neutral-900 text-white page-container">
       {/* Header - only show when selecting stadiums */}
       {!selectedStadium && (
-        <header className="w-full max-w-3xl flex items-center justify-between gap-4 mb-2">
+        <header className="w-full max-w-3xl mx-auto flex items-center justify-between gap-4 mb-2">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold">
               {user.name.charAt(0)}
@@ -81,16 +81,15 @@ export default function MainPage() {
 
       {/* Title / Brand - only show when selecting stadiums */}
       {!selectedStadium && (
-        <h3 className="text-4xl md:text-5xl font-extrabold text-center mb-6">Food Stadium</h3>
+        <h2 className="text-lg font-semibold text-center mb-3">Food Stadium</h2>
       )}
-
       {/* Content based on selection */}
       {!selectedStadium ? (
-        <div className="w-full max-w-3xl">
+        <div className="w-full max-w-3xl mx-auto">
           <Stadiums onStadiumSelect={handleStadiumSelect} />
         </div>
       ) : (
-        <div className="w-full">
+        <div className="w-full max-w-3xl mx-auto">
           <Restaurants onBack={handleBackToStadiums} />
         </div>
       )}

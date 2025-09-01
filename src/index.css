@@ -13,6 +13,35 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Standard spacing for consistent layout across all pages */
+  --page-padding-x: 1.5rem; /* 24px */
+  --page-padding-y: 1.5rem; /* 24px */
+  --section-spacing: 1.5rem; /* 24px */
+  --header-spacing: 2rem; /* 32px */
+}
+
+/* Utility classes for consistent spacing */
+.page-container {
+  padding: var(--page-padding-y) var(--page-padding-x);
+}
+
+.page-padding-x {
+  padding-left: var(--page-padding-x);
+  padding-right: var(--page-padding-x);
+}
+
+.page-padding-y {
+  padding-top: var(--page-padding-y);
+  padding-bottom: var(--page-padding-y);
+}
+
+.section-spacing {
+  margin-bottom: var(--section-spacing);
+}
+
+.header-spacing {
+  margin-bottom: var(--header-spacing);
 }
 
 /* Telegram Mini App Fullscreen Styles */
@@ -88,8 +117,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  min-width: 100%;
   min-height: 100vh;
 }
 
@@ -109,6 +137,7 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
@@ -128,4 +157,24 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Card component styles - ensure consistent appearance */
+.bg-neutral-800 {
+  background-color: #262626 !important;
+}
+
+.bg-neutral-800:hover {
+  background-color: #404040 !important;
+}
+
+/* Ensure card buttons maintain their styling */
+button[class*="bg-neutral-800"] {
+  background-color: #262626 !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+button[class*="bg-neutral-800"]:hover {
+  background-color: #404040 !important;
 }

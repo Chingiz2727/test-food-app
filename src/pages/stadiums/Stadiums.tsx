@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getStadiums, type Stadium } from "../../api/stadiums";
+import { ItemsList } from "../../components";
 
 type Props = {
     onStadiumSelect: (stadiumId: number) => void;
@@ -22,23 +23,14 @@ export default function Stadiums({ onStadiumSelect }: Props) {
         return () => { cancelled = true; };
     }, []);
 
-    if (loading) return <div className="text-center text-white/60">Загрузка стадионов...</div>;
-    if (error) return <div className="text-center text-red-400">Ошибка: {error}</div>;
-
     return (
-        <div className="w-full space-y-4">
-            {stadiums.map(stadium => (  
-                <button
-                    key={stadium.id}
-                    onClick={() => onStadiumSelect(stadium.id)}
-                    className="w-full bg-neutral-800 rounded-xl overflow-hidden shadow-lg hover:bg-neutral-700 transition-colors text-left"
-                >
-                    <img src={stadium.image} alt={stadium.name} className="w-full h-48 object-cover" />
-                    <div className="p-4">
-                        <div className="text-lg font-bold text-white mb-2">{stadium.name}</div>
-                    </div>
-                </button>
-            ))}
-        </div>
+        <ItemsList
+            items={stadiums}
+            loading={loading}
+            error={error}
+            onItemClick={(stadium) => onStadiumSelect(stadium.id)}
+            loadingText="Загрузка стадионов..."
+            errorText="Ошибка загрузки стадионов"
+        />
     );
 }
