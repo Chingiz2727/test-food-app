@@ -6,9 +6,10 @@ import { useCart } from '../../contexts/CartContext';
 
 type Props = {
   onBack: () => void;
+  onNavigateToCheckout: () => void;
 };
 
-export default function FoodPage({ onBack }: Props) {
+export default function FoodPage({ onBack, onNavigateToCheckout }: Props) {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [categories, setCategories] = useState<FoodCategory[]>([]);
   const [loading, setLoading] = useState(false);
@@ -36,17 +37,12 @@ export default function FoodPage({ onBack }: Props) {
     return () => { cancelled = true; };
   }, []);
 
-  const handleCheckout = () => {
-    // This will be called after successful order confirmation
-    console.log('Checkout completed - cart cleared');
-  };
-
   // Debug: log total items
   const totalItems = getTotalItems();
 
   if (loading) {
     return (
-      <div className="w-full">
+      <div className="w-full px-4">
         <PageHeader title="Меню" onBack={onBack} />
         <div className="text-center text-white/60 py-8">Загрузка меню...</div>
       </div>
@@ -55,7 +51,7 @@ export default function FoodPage({ onBack }: Props) {
 
   if (error) {
     return (
-      <div className="w-full">
+      <div className="w-full px-4">
         <PageHeader title="Меню" onBack={onBack} />
         <div className="text-center text-red-400 py-8">Ошибка: {error}</div>
       </div>
@@ -69,11 +65,11 @@ export default function FoodPage({ onBack }: Props) {
   }));
 
   return (
-    <div className="w-full pb-40">
+    <div className="w-full pb-40 px-4">
       <PageHeader title="Меню" onBack={onBack} />
       
       {/* Food Sections */}
-      <div className="space-y-8">
+      <div className="space-y-8 max-w-3xl mx-auto">
         {foodsByCategory.map(({ category, foods }) => (
           <FoodSection key={category.id} category={category} foods={foods} />
         ))}
@@ -84,7 +80,7 @@ export default function FoodPage({ onBack }: Props) {
         Товаров в корзине: {totalItems}
       </div>
       
-      <CheckoutButton onCheckout={handleCheckout} />
+      <CheckoutButton onNavigateToCheckout={onNavigateToCheckout} />
     </div>
   );
 }

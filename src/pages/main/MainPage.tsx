@@ -5,13 +5,14 @@ import { getCities } from "../../api/cities";
 import Stadiums from "../stadiums/Stadiums";
 import Restaurants from "../restaurants/Restaurants";
 import FoodPage from "../food/FoodPage";
+import CheckoutPage from "../checkout/CheckoutPage";
 
 export default function MainPage() {
   const [cities, setCities] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState<City | null>(load<City | null>("city", null));
   const [showCityPicker, setShowCityPicker] = useState(false);
   const [selectedStadium, setSelectedStadium] = useState<number | null>(null);
-  const [selectedRestaurant, setSelectedRestaurant] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState<"main" | "food" | "checkout">("main");
 
   // mock user data
   const user = { name: "Гость" };
@@ -37,19 +38,52 @@ export default function MainPage() {
     setSelectedStadium(null);
   }
 
-  function handleRestaurantSelect(restaurantId: number) {
-    setSelectedRestaurant(restaurantId);
+  function handleRestaurantSelect() {
+    setCurrentPage("food");
   }
 
   function handleBackToRestaurants() {
-    setSelectedRestaurant(null);
+    setCurrentPage("main");
   }
 
+  function handleNavigateToCheckout() {
+    setCurrentPage("checkout");
+  }
+
+  function handleBackFromCheckout() {
+    setCurrentPage("food");
+  }
+
+  function handleNavigateToMain() {
+    setCurrentPage("main");
+  }
+
+  // Render checkout page
+  if (currentPage === "checkout") {
+    return (
+      <CheckoutPage 
+        onBack={handleBackFromCheckout}
+        onNavigateToMain={handleNavigateToMain}
+      />
+    );
+  }
+
+  // Render food page
+  if (currentPage === "food") {
+    return (
+      <FoodPage 
+        onBack={handleBackToRestaurants}
+        onNavigateToCheckout={handleNavigateToCheckout}
+      />
+    );
+  }
+
+  // Render main page (stadiums/restaurants)
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-900 text-white page-container">
+    <div className="min-h-screen flex flex-col items-center bg-neutral-900 text-white page-container">
       {/* Header - only show when selecting stadiums */}
-      {!selectedStadium && !selectedRestaurant && (
-        <header className="w-full max-w-3xl mx-auto flex items-center justify-between gap-4 mb-2">
+      {!selectedStadium && (
+        <header className="w-full max-w-3xl flex items-center justify-between gap-4 mb-2">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold">
               {user.name.charAt(0)}
@@ -90,22 +124,18 @@ export default function MainPage() {
       )}
 
       {/* Title / Brand - only show when selecting stadiums */}
-      {!selectedStadium && !selectedRestaurant && (
+      {!selectedStadium && (
         <h3 className="text-4xl md:text-5xl font-extrabold text-center mb-6 mx-auto">Food Stadium</h3>
       )}
-
+ 
       {/* Content based on selection */}
-      {!selectedStadium && !selectedRestaurant ? (
-        <div className="w-full max-w-3xl mx-auto pb-20">
+      {!selectedStadium ? (
+        <div className="w-full max-w-3xl">
           <Stadiums onStadiumSelect={handleStadiumSelect} />
         </div>
-      ) : selectedStadium && !selectedRestaurant ? (
-        <div className="w-full max-w-3xl mx-auto pb-20">
-          <Restaurants onBack={handleBackToStadiums} onRestaurantSelect={handleRestaurantSelect} />
-        </div>
       ) : (
-        <div className="w-full max-w-3xl mx-auto pb-20">
-          <FoodPage onBack={handleBackToRestaurants} />
+        <div className="w-full max-w-3xl">
+          <Restaurants onBack={handleBackToStadiums} onRestaurantSelect={handleRestaurantSelect} />
         </div>
       )}
     </div>
